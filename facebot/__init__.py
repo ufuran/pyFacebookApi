@@ -2,7 +2,7 @@
 
 import threading
 import json
-import apihelper
+from facebot import apihelper
 
 
 class RunThread(threading.Thread):

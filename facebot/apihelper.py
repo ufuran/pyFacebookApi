@@ -2,7 +2,7 @@
 import json
 
 import requests
-import fbtypes
+from facebot import types
 
 req_session = requests.session()
 
@@ -44,13 +44,13 @@ def send_message(token, user_id=None, user_phone_number=None, first_name=None, l
     # message
     if text or attachment or buttons:
         if buttons:
-            payl = fbtypes.Payload(template_type="button", text=text, buttons=buttons)
-            attach = fbtypes.Attachment(type="template", payload=payl)
-            message = fbtypes.Message(attachment=attach)
+            payl = types.Payload(template_type="button", text=text, buttons=buttons)
+            attach = types.Attachment(type="template", payload=payl)
+            message = types.Message(attachment=attach)
         elif text:
-            message = fbtypes.Message(text=text)
+            message = types.Message(text=text)
         elif attachment:
-            message = fbtypes.Message(attachment=attachment)
+            message = types.Message(attachment=attachment)
         if quick_replies:
             message.quick_replies = quick_replies.quick_replies
         if metadata:
@@ -77,9 +77,9 @@ def send_generic(token, elements, user_id=None, user_phone_number=None):
     else:
         raise ApiException('Phone_number or id must be set', 'send_message', None)
     params['recipient'] = recipient
-    payl = fbtypes.Payload(template_type='generic', elements=elements.elements[:10])
-    attach = fbtypes.Attachment(type='template', payload=payl)
-    message = fbtypes.Message(attachment=attach)
+    payl = types.Payload(template_type='generic', elements=elements.elements[:10])
+    attach = types.Attachment(type='template', payload=payl)
+    message = types.Message(attachment=attach)
     params['message'] = message.to_json()
     r = _request(token, 'messages', http_method='post', params=params)
     return r.text
@@ -95,10 +95,10 @@ def send_list(token, elements, buttons=None, top_element_style='large', user_id=
         raise ApiException('Phone_number or id must be set', 'send_message', None)
     params['recipient'] = recipient
 
-    payl = fbtypes.Payload(template_type="list", top_element_style=top_element_style,
+    payl = types.Payload(template_type="list", top_element_style=top_element_style,
                            elements=elements.elements, buttons=buttons)
-    attach = fbtypes.Attachment(type='template', payload=payl)
-    message = fbtypes.Message(attachment=attach)
+    attach = types.Attachment(type='template', payload=payl)
+    message = types.Message(attachment=attach)
     params['message'] = message.to_json()
     r = _request(token, 'messages', http_method='post', params=params)
     return r.text
