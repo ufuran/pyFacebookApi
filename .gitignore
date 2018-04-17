@@ -92,3 +92,5 @@ ENV/
 # Custom
 .vscode/
 pyFacebookAPI.egg-info/
+facebot/__pycache__
+.pytest_cache/

@@ -57,8 +57,8 @@ class QuickReplie(JsonD):
 
 
 class Attachment(JsonD):
-    def __init__(self, type, payload):
-        self.type = type
+    def __init__(self, _type, payload):
+        self.type = _type
         self.payload = payload
 
 
@@ -85,8 +85,10 @@ class Elements(JsonD):
         self.elements = []
 
     def add(self, element):
-        self.elements.append(element)
-
+        if type(element) is Element:
+            self.elements.append(element)
+        else:
+            raise Exception("Element must be class Element")
 
 class Element(JsonD):
     def __init__(self, title, item_url=None, default_action=None, image_url=None, subtitle=None, buttons=None):
@@ -105,13 +107,16 @@ class Buttons(JsonD):
         self.buttons = []
 
     def add(self, button):
-        self.buttons.append(button)
+        if type(button) is UrlButton or type(button) is PostbackButton:
+            self.buttons.append(button)
+        else:
+            raise Exception("Button must be class UrlButton or PostbackButton")
 
 
 class UrlButton(JsonD):
-    def __init__(self, url, title=None, type="web_url", webview_height_ratio="full", messenger_extensions=False,
+    def __init__(self, url, title=None, _type="web_url", webview_height_ratio="full", messenger_extensions=False,
                  fallback_url=None, webview_share_button=None):
-        self.type = type
+        self.type = _type
         self.title = title
         self.url = url
         self.webview_height_ratio = webview_height_ratio
@@ -121,7 +126,7 @@ class UrlButton(JsonD):
 
 
 class PostbackButton(JsonD):
-    def __init__(self, payload, title=None, type="postback"):
-        self.type = type
+    def __init__(self, payload, title=None, _type="postback"):
+        self.type = _type
         self.title = title
         self.payload = payload
