@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import threading
-import json
+try:
+    import ujson as json
+except ImportError:
+    import json
 from facebot import apihelper
 
 
